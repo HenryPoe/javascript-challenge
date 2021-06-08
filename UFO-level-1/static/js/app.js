@@ -25,8 +25,6 @@ function drawTable(data) {
 
 // Draws the table with all data on the page
 function filterTable(data, filterString) {
-    // Variable to insure that at least one row is displayed after the filter
-    var count = 0;
     data.forEach((sighting) => {
         var row = tbody.append("tr");
         if (sighting.datetime === filterString) {
@@ -34,17 +32,15 @@ function filterTable(data, filterString) {
                 var cell = row.append("td");
                 cell.text(value);
             });
-            count++;
         };
     });
-    if (count === 0)
-        drawTable(tableData);
 };
 
 // Runs on form submit to filter the table
 function runEnter() {
     // Prevent the page from refreshing
     d3.event.preventDefault();
+    // Delete the existing table first
     var rowCount = ufoTable.rows.length;
     for (var i = rowCount - 1; i > 0; i--) {
         ufoTable.deleteRow(i);
@@ -55,9 +51,8 @@ function runEnter() {
     filterTable(tableData, filter);
 };
 
-
 // Run the filter function when the form is submitted or when the button is pressed
 button.on("click", runEnter);
-form.on("submit", runEnter)
+form.on("submit", runEnter);
 // Draw the table on initial load
 drawTable(tableData);
